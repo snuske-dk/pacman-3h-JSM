@@ -11,6 +11,8 @@ pg.display.set_caption("Pac-Man (clone)")
 
 ## Game loop ##
 running = True
+x = 0
+y = 0
 while running:
     
     ## Handle events (keypresses etc.)
@@ -20,10 +22,23 @@ while running:
         # Close window (e.g. pressing [x] or Ctrl+F4)
         if event.type == pg.QUIT:
             running = False
+        # Keypresses
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_UP:
+                y -= 5
+            elif event.key == pg.K_DOWN:
+                y += 5
+            elif event.key == pg.K_LEFT:
+                x -= 5
+            elif event.key == pg.K_RIGHT:
+                x += 5
+            elif event.key == pg.K_ESCAPE:
+                running = False
+
 
     ## Draw ##
     screen.fill((0,0,0)) # Black
-    pg.draw.circle(screen, (220,220,10), (100,200), 16)
+    pg.draw.circle(screen, (220,220,10), (x,y), 16)
 
 
     # Update window with newly drawn pixels
