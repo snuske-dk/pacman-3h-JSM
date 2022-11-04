@@ -9,6 +9,10 @@ pg.init()
 screen = pg.display.set_mode((300,400))
 pg.display.set_caption("Pac-Man (clone)")
 
+pacman_img = pg.image.load("pacman.png")
+pacman_img = pg.transform.scale(pacman_img, (32,32))
+
+
 ## Game loop ##
 running = True
 x = 0
@@ -37,8 +41,8 @@ while running:
 
 
     ## Draw ##
-    screen.fill((0,0,0)) # Black
-    pg.draw.circle(screen, (220,220,10), (x,y), 16)
+    screen.fill((0,0,0)) 
+    screen.blit(pacman_img, (x,y)) 
 
 
     # Update window with newly drawn pixels
