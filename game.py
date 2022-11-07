@@ -9,14 +9,18 @@ pg.init()
 screen = pg.display.set_mode((300,400))
 pg.display.set_caption("Pac-Man (clone)")
 
-pacman_img = pg.image.load("pacman.png")
-pacman_img = pg.transform.scale(pacman_img, (32,32))
+pacman_images = []
+for i in range(6):
+    img = pg.image.load(f"images/pacman_{i}.png")
+    img = pg.transform.scale(img, (32,32))
+    pacman_images.append(img)
 
 
 ## Game loop ##
 running = True
 x = 0
 y = 0
+tick = 0
 while running:
     
     ## Handle events (keypresses etc.)
@@ -42,11 +46,15 @@ while running:
 
     ## Draw ##
     screen.fill((0,0,0)) 
-    screen.blit(pacman_img, (x,y)) 
+    
+    # Draw pacman
+    r = tick%6
+    screen.blit(pacman_images[r], (x,y)) 
 
 
     # Update window with newly drawn pixels
     pg.display.flip()  
+    tick += 1
 
     # Limit framerate by waiting a 10-100 milliseconds
-    time.sleep(0.02)
+    time.sleep(0.05)
