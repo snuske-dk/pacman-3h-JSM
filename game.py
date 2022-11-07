@@ -22,6 +22,20 @@ for i in range(2):
     img = pg.transform.scale(img, (32,32))
     ghost_images.append(img)
 
+# Level tiles 
+# [0,0][0,1][0,2][0,2]
+# [1,0][1,1][1,2][1,2]
+# [2,0][2,1][2,2][2,2]
+# [3,0][3,1][3,2][3,2]
+level = [['#', '#', '#', '#', '#'],
+         ['#', ' ', ' ', ' ', '#'],
+         ['#', ' ', '#', ' ', '#'],
+         ['#', ' ', '#', ' ', '#'],
+         ['#', ' ', '#', ' ', '#'],
+         ['#', ' ', '#', ' ', '#'],
+         ['#', ' ', ' ', ' ', '#'],
+         ['#', '#', '#', '#', '#']]
+
 
 ## Game loop ##
 running = True
@@ -73,6 +87,12 @@ while running:
 
     ## Draw ##
     screen.fill((0,0,0)) 
+
+    # Draw level
+    for row_idx, row in enumerate(level):
+        for col_idx, tile in enumerate(row):
+            if tile == "#":
+                pg.draw.rect(screen, (10,10,250), pg.Rect(col_idx*32+1, row_idx*32+1, 30, 30), 1)
     
     # Draw pacman
     r = tick%6
