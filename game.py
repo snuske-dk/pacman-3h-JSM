@@ -74,13 +74,17 @@ while running:
     
     # Move pacman
     if direction == "up":
-        pacman_row -= 1
+        if level[pacman_row-1][pacman_col] != "#":
+            pacman_row -= 1
     elif direction == "down":
-        pacman_row += 1
+        if level[pacman_row+1][pacman_col] != "#":
+            pacman_row += 1
     elif direction == "left":
-        pacman_col -= 1 
+        if level[pacman_row][pacman_col-1] != "#":
+            pacman_col -= 1
     elif direction == "right":
-        pacman_col += 1 
+        if level[pacman_row][pacman_col+1] != "#":
+            pacman_col += 1 
     
     # Move ghost 
     ghost_col += random.randint(-1,1)
