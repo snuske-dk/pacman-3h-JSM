@@ -25,8 +25,10 @@ for i in range(2):
 # Level tiles 
 # [0,0][0,1][0,2][0,2]
 # [1,0][1,1][1,2][1,2]
-# [2,0][2,1][2,2][2,2]
+# [2,0][2,1][2,2][2,2] <- row
 # [3,0][3,1][3,2][3,2]
+#        ^ 
+#      column
 level = [['#', '#', '#', '#', '#'],
          ['#', ' ', ' ', ' ', '#'],
          ['#', ' ', '#', ' ', '#'],
@@ -39,10 +41,10 @@ level = [['#', '#', '#', '#', '#'],
 
 ## Game loop ##
 running = True
-x = 0
-y = 0
-ghost_x = 100
-ghost_y = 100
+pacman_row = 1 
+pacman_col = 1 
+ghost_row = 3 
+ghost_col = 2 
 tick = 0
 direction = None
 while running:
@@ -72,17 +74,17 @@ while running:
     
     # Move pacman
     if direction == "up":
-        y -= 5
+        pacman_row -= 1
     elif direction == "down":
-        y += 5
+        pacman_row += 1
     elif direction == "left":
-        x -= 5
+        pacman_col -= 1 
     elif direction == "right":
-        x += 5
+        pacman_col += 1 
     
     # Move ghost 
-    ghost_x += random.randint(-5,5)
-    ghost_y += random.randint(-5,5)
+    ghost_col += random.randint(-1,1)
+    ghost_row += random.randint(-1,1)
 
 
     ## Draw ##
@@ -96,11 +98,11 @@ while running:
     
     # Draw pacman
     r = tick%6
-    screen.blit(pacman_images[r], (x,y)) 
+    screen.blit(pacman_images[r], (pacman_col*32, pacman_row*32)) 
 
     # Draw ghost
     r = int(tick/2)%2 # int(tick/2) for half animation speed
-    screen.blit(ghost_images[r], (ghost_x, ghost_y))
+    screen.blit(ghost_images[r], (ghost_col*32, ghost_row*32))
 
 
     # Update window with newly drawn pixels
@@ -108,4 +110,4 @@ while running:
     tick += 1
 
     # Limit framerate by waiting a 10-100 milliseconds
-    time.sleep(0.05)
+    time.sleep(0.15)
