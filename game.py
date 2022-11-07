@@ -30,6 +30,7 @@ y = 0
 ghost_x = 100
 ghost_y = 100
 tick = 0
+direction = None
 while running:
     
     ## Handle events (keypresses etc.)
@@ -42,17 +43,30 @@ while running:
         # Keypresses
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
-                y -= 5
+                direction = "up"
             elif event.key == pg.K_DOWN:
-                y += 5
+                direction = "down"
             elif event.key == pg.K_LEFT:
-                x -= 5
+                direction = "left"
             elif event.key == pg.K_RIGHT:
-                x += 5
+                direction = "right"
             elif event.key == pg.K_ESCAPE:
                 running = False
 
+
     ## Move / logic ##
+    
+    # Move pacman
+    if direction == "up":
+        y -= 5
+    elif direction == "down":
+        y += 5
+    elif direction == "left":
+        x -= 5
+    elif direction == "right":
+        x += 5
+    
+    # Move ghost 
     ghost_x += random.randint(-5,5)
     ghost_y += random.randint(-5,5)
 
