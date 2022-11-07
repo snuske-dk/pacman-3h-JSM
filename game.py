@@ -7,7 +7,7 @@ import pygame as pg
 ## Setup ##
 pg.init()
 
-screen = pg.display.set_mode((300,400))
+screen = pg.display.set_mode((8*32,7*32))
 pg.display.set_caption("Pac-Man (clone)")
 
 pacman_images = []
@@ -23,21 +23,14 @@ for i in range(2):
     ghost_images.append(img)
 
 # Level tiles 
-# [0,0][0,1][0,2][0,2]
-# [1,0][1,1][1,2][1,2]
-# [2,0][2,1][2,2][2,2] <- row
-# [3,0][3,1][3,2][3,2]
-#        ^ 
-#      column
-level = [['#', '#', '#', '#', '#'],
-         ['#', ' ', ' ', ' ', '#'],
-         ['#', ' ', '#', ' ', '#'],
-         ['#', ' ', '#', ' ', '#'],
-         ['#', ' ', '#', ' ', '#'],
-         ['#', ' ', '#', ' ', '#'],
-         ['#', ' ', ' ', ' ', '#'],
-         ['#', '#', '#', '#', '#']]
-
+level = []
+with open("level.txt", "r") as level_file:
+    for line in level_file:
+        line = line.rstrip("\r\n") # Remove line endings
+        row = []
+        for character in line:
+            row.append(character)
+        level.append(row)
 
 ## Game loop ##
 running = True
