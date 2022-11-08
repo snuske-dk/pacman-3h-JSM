@@ -4,6 +4,9 @@ import random
 import time
 import pygame as pg
 
+from pacman import PacMan
+from ghost import Ghost
+
 ## Setup ##
 pg.init()
 
@@ -12,37 +15,14 @@ pg.display.set_caption("Pac-Man (clone)")
 
 font_press_enter = pg.font.Font(None, 32)
 
-# https://sfxr.me/#34T6PktF8TcRjBGBCtaWAp8xrJeEmwSfouC2KVwAWC42iM2UWcDqruxhd8Xq4MFBc7kMaDGuyeyqde9ddiWDHprGh2dvs6Ery9NZQmbQM9gyXmSZzdhxPnMnw
-# https://sfxr.me/#34T6PkpqAUU8XZ3ze41FCou6ZCuAPdnvQEjkm2P1TPRMxjSRZdiQm9e5DJF1dPTvN8C3gPXJ7DuFniwZVHsmDC5qDkCUYDnkkgQAsqe9MaC2pHxKexVqdd5Jw
-sound_pacman_move0 = pg.mixer.Sound("sounds/pacman_move_0.wav")
-sound_pacman_move0.set_volume(0.5)
-sound_pacman_move1 = pg.mixer.Sound("sounds/pacman_move_1.wav")
-sound_pacman_move1.set_volume(0.5)
-
-pacman_images = []
-for i in range(6):
-    img = pg.image.load(f"images/pacman_{i}.png")
-    img = pg.transform.scale(img, (32,32))
-    pacman_images.append(img)
-
-ghost_images = []
-for i in range(2):
-    img = pg.image.load(f"images/ghost_{i}.png")
-    img = pg.transform.scale(img, (32,32))
-    ghost_images.append(img)
-
-
 ## Game loop ##
 state = "LOAD"
 running = True
 while running:
     
     if state == "LOAD":
-        pacman_row = 1 
-        pacman_col = 1 
-        ghost_row = 3 
-        ghost_col = 2 
-        tick = 0
+        pacman = PacMan(1,1)
+        ghost = Ghost(3,2)
         direction = None
 
         # Level tiles 
@@ -62,8 +42,6 @@ while running:
         text = font_press_enter.render("Press [Enter] to play", True, (220,220,10))
         text_rect = text.get_rect(center=(8*32/2, 7*32/2)) 
         screen.blit(text, text_rect)
-        screen.blit(pacman_images[3], (2*32,2*32))
-        screen.blit(ghost_images[0], (4*32,2*32))
 
         events = pg.event.get()
         for event in events:
@@ -102,35 +80,8 @@ while running:
 
         ## Move / logic ##
 
-        # Move pacman
-        moving = False
-        if direction == "up":
-            if level[pacman_row-1][pacman_col] != "#":
-                pacman_row -= 1
-                moving = True
-        elif direction == "down":
-            if level[pacman_row+1][pacman_col] != "#":
-                pacman_row += 1
-                moving = True
-        elif direction == "left":
-            if level[pacman_row][pacman_col-1] != "#":
-                pacman_col -= 1
-                moving = True
-        elif direction == "right":
-            if level[pacman_row][pacman_col+1] != "#":
-                pacman_col += 1 
-                moving = True
-
-        if moving:
-            if tick%2 == 0:
-                sound_pacman_move0.play()
-            else:
-                sound_pacman_move1.play()
-        
-
-        # Move ghost 
-        ghost_col += random.randint(-1,1)
-        ghost_row += random.randint(-1,1)
+        pacman.move(level,direction)
+        ghost.move(level)
 
 
         ## Draw ##
@@ -142,18 +93,12 @@ while running:
                 if tile == "#":
                     pg.draw.rect(screen, (10,10,250), pg.Rect(col_idx*32+1, row_idx*32+1, 30, 30), 1)
 
-        # Draw pacman
-        r = tick%6
-        screen.blit(pacman_images[r], (pacman_col*32, pacman_row*32)) 
 
-        # Draw ghost
-        r = int(tick/2)%2 # int(tick/2) for half animation speed
-        screen.blit(ghost_images[r], (ghost_col*32, ghost_row*32))
-
+        ghost.draw(screen)
+        pacman.draw(screen)
 
         # Update window with newly drawn pixels
         pg.display.flip()  
-        tick += 1
 
         # Limit framerate by waiting a 10-100 milliseconds
         time.sleep(0.15)
