@@ -6,6 +6,7 @@ import pygame as pg
 
 from pacman import PacMan
 from ghost import Ghost
+from level import Level
 
 ## Setup ##
 pg.init()
@@ -21,20 +22,10 @@ running = True
 while running:
     
     if state == "LOAD":
-        pacman = PacMan(1,1)
+        pacman = PacMan(0,1)
         ghost = Ghost(3,2)
         direction = None
-
-        # Level tiles 
-        level = []
-        with open("level.txt", "r") as level_file:
-            for line in level_file:
-                line = line.rstrip("\r\n") # Remove line endings
-                row = []
-                for character in line:
-                    row.append(character)
-                level.append(row)
-
+        level = Level("level.txt")
         state = "READY"
 
 
@@ -79,21 +70,13 @@ while running:
 
 
         ## Move / logic ##
-
         pacman.move(level,direction)
         ghost.move(level)
 
 
         ## Draw ##
         screen.fill((0,0,0)) 
-
-        # Draw level
-        for row_idx, row in enumerate(level):
-            for col_idx, tile in enumerate(row):
-                if tile == "#":
-                    pg.draw.rect(screen, (10,10,250), pg.Rect(col_idx*32+1, row_idx*32+1, 30, 30), 1)
-
-
+        level.draw(screen)
         ghost.draw(screen)
         pacman.draw(screen)
 
