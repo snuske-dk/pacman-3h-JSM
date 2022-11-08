@@ -12,6 +12,13 @@ pg.display.set_caption("Pac-Man (clone)")
 
 font_press_enter = pg.font.Font(None, 32)
 
+# https://sfxr.me/#34T6PktF8TcRjBGBCtaWAp8xrJeEmwSfouC2KVwAWC42iM2UWcDqruxhd8Xq4MFBc7kMaDGuyeyqde9ddiWDHprGh2dvs6Ery9NZQmbQM9gyXmSZzdhxPnMnw
+# https://sfxr.me/#34T6PkpqAUU8XZ3ze41FCou6ZCuAPdnvQEjkm2P1TPRMxjSRZdiQm9e5DJF1dPTvN8C3gPXJ7DuFniwZVHsmDC5qDkCUYDnkkgQAsqe9MaC2pHxKexVqdd5Jw
+sound_pacman_move0 = pg.mixer.Sound("sounds/pacman_move_0.wav")
+sound_pacman_move0.set_volume(0.5)
+sound_pacman_move1 = pg.mixer.Sound("sounds/pacman_move_1.wav")
+sound_pacman_move1.set_volume(0.5)
+
 pacman_images = []
 for i in range(6):
     img = pg.image.load(f"images/pacman_{i}.png")
@@ -96,18 +103,30 @@ while running:
         ## Move / logic ##
 
         # Move pacman
+        moving = False
         if direction == "up":
             if level[pacman_row-1][pacman_col] != "#":
                 pacman_row -= 1
+                moving = True
         elif direction == "down":
             if level[pacman_row+1][pacman_col] != "#":
                 pacman_row += 1
+                moving = True
         elif direction == "left":
             if level[pacman_row][pacman_col-1] != "#":
                 pacman_col -= 1
+                moving = True
         elif direction == "right":
             if level[pacman_row][pacman_col+1] != "#":
                 pacman_col += 1 
+                moving = True
+
+        if moving:
+            if tick%2 == 0:
+                sound_pacman_move0.play()
+            else:
+                sound_pacman_move1.play()
+        
 
         # Move ghost 
         ghost_col += random.randint(-1,1)
