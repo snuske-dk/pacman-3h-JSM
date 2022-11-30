@@ -53,15 +53,15 @@ class PacMan:
     def draw(self,screen,direction):
         r = int((self.tick/2)%6)
         if direction == "left":
-            screen.blit(self.images[r], (self.col, self.row))
+            screen.blit(self.images[r], (self.col*32, self.row*32))
         elif direction == "right":
-            screen.blit(pg.transform.rotate(self.images[r],180), (self.col, self.row))
+            screen.blit(pg.transform.rotate(self.images[r],180), (self.col*32, self.row*32))
         elif direction == "up":
-            screen.blit(pg.transform.rotate(self.images[r],-90), (self.col, self.row))
+            screen.blit(pg.transform.rotate(self.images[r],-90), (self.col*32, self.row*32))
         elif direction == "down":
-            screen.blit(pg.transform.rotate(self.images[r],90), (self.col, self.row))
+            screen.blit(pg.transform.rotate(self.images[r],90), (self.col*32, self.row*32))
         else:
-            screen.blit(self.images[0], (self.col, self.row))
+            screen.blit(self.images[0], (self.col*32, self.row*32))
         
         moving = True
         if moving:
