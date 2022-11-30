@@ -7,7 +7,7 @@ class Ghost:
 
         self.col = col
         self.row = row
-
+        
         self.images = []
         for i in range(2):
             img = pg.image.load(f"images/ghost_{i}.png")
@@ -22,7 +22,7 @@ class Ghost:
         self.row += random.randint(-1,1)
 
         self.tick += 1 
-    
+        
     def draw(self,screen):
         r = self.tick%2
         screen.blit(self.images[r], (self.col*32, self.row*32)) 

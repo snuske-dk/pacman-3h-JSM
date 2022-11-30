@@ -44,11 +44,12 @@ class PacMan:
                 self.col += 1 
                 moving = True
 
-        if moving:
-            if self.tick%2 == 0:
-                self.sound_move0.play()
-            else:
-                self.sound_move1.play()
+        if level.tiles[self.row][self.col] == ".":
+            print("pp")
+            level.tiles[self.row][self.col] = " "
+        
+    
+
 
         self.tick += 1 
     
