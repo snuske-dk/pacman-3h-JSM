@@ -13,6 +13,7 @@ class PacMan:
 
         self.col = col
         self.row = row
+        self.direction = "left"
 
         self.images = []
         for i in range(6):
@@ -25,25 +26,44 @@ class PacMan:
 
     def move(self, level, direction):
         # Move pacman
+        self_direction = None
+        tick = 0
         moving = False
         if direction == "up":
             if level.tiles[self.row-1][self.col] != "#":
+                self_direction = "up"
                 self.row -= 1
                 moving = True
-
         elif direction == "down":
             if level.tiles[self.row+1][self.col] != "#":
+                self_direction = "down"
                 self.row += 1
                 moving = True
         elif direction == "left":
             if level.tiles[self.row][self.col-1] != "#":
+                self_direction = "left"
                 self.col -= 1
                 moving = True
         elif direction == "right":
             if level.tiles[self.row][self.col+1] != "#":
-                self.col += 1 
+                self_direction = "right"
+                self.col += 1
                 moving = True
-
+        
+    def draw(self,screen,direction):
+        r = int((self.tick/2)%6)
+        if direction == "left":
+            screen.blit(self.images[r], (self.col*32, self.row*32))
+        elif direction == "right":
+            screen.blit(pg.transform.rotate(self.images[r],180), (self.col*32, self.row*32))
+        elif direction == "up":
+            screen.blit(pg.transform.rotate(self.images[r],-90), (self.col*32, self.row*32))
+        elif direction == "down":
+            screen.blit(pg.transform.rotate(self.images[r],90), (self.col*32, self.row*32))
+        else:
+            screen.blit(self.images[0], (self.col*32, self.row*32))
+        
+        moving = True
         if moving:
             if self.tick%2 == 0:
                 self.sound_move0.play()
@@ -52,8 +72,8 @@ class PacMan:
 
         self.tick += 1 
     
-    def draw(self,screen):
+    
 
-        # Draw pacman
-        r = self.tick%6
-        screen.blit(self.images[r], (self.col*32, self.row*32)) 
+
+
+
