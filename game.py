@@ -22,9 +22,9 @@ running = True
 while running:
     
     if state == "LOAD":
-        pacman = PacMan(0,1)
+        pacman = PacMan(1,1)
         ghost = Ghost(3,2)
-        direction = None
+        self_direction = None
         level = Level("level.txt")
         state = "READY"
 
@@ -58,19 +58,19 @@ while running:
             # Keypresses
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
-                    direction = "up"
+                    self_direction = "up"
                 elif event.key == pg.K_DOWN:
-                    direction = "down"
+                    self_direction = "down"
                 elif event.key == pg.K_LEFT:
-                    direction = "left"
+                    self_direction = "left"
                 elif event.key == pg.K_RIGHT:
-                    direction = "right"
+                    self_direction = "right"
                 elif event.key == pg.K_ESCAPE:
                     running = False
 
 
         ## Move / logic ##
-        pacman.move(level,direction)
+        pacman.move(level, self_direction) 
         ghost.move(level)
 
 
@@ -78,7 +78,7 @@ while running:
         screen.fill((0,0,0)) 
         level.draw(screen)
         ghost.draw(screen)
-        pacman.draw(screen)
+        pacman.draw(screen, self_direction)
 
         # Update window with newly drawn pixels
         pg.display.flip()  
